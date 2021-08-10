@@ -1,0 +1,613 @@
+{
+	"info": {
+		"_postman_id": "d2272d9a-36c0-4958-9832-d62a247141f4",
+		"name": "SDET Coding Exercise",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Q1 Answers",
+			"item": [
+				{
+					"name": "Getting a list of shows w/Tests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const startAcceptableDate = new Date(\"2012-12-31\");",
+									"const endAcceptableDate = new Date(\"2016-01-01\");",
+									"",
+									"tests[\"The Leftovers\"]; {",
+									"",
+									"    pm.test(\"The Leftovers: is correct name\", () => {",
+									"        pm.expect(jsonData[130].name).to.eql(\"The Leftovers\");",
+									"    });",
+									"    pm.test(\"The Leftovers: Aired on HBO\", () => {",
+									"        pm.expect(jsonData[130].network.name).to.eql(\"HBO\");",
+									"    });",
+									"",
+									"    pm.test(\"The Leftovers: series contains Drama\", () => {",
+									"        pm.expect(jsonData[130].genres).to.be.an('array').that.includes(\"Drama\");",
+									"    });",
+									"",
+									"    pm.test(\"The Leftovers: aired after the year 2012, but before the year 2016\", () => {",
+									"        let firstAiredDate = new Date(jsonData[130].premiered);",
+									"        pm.expect(firstAiredDate).to.be.within(startAcceptableDate, endAcceptableDate);",
+									"    });",
+									"}",
+									"",
+									"tests[\"True Detective\"]; {",
+									"    pm.test(\"True Detective: is correct name\", () => {",
+									"        pm.expect(jsonData[4].name).to.eql(\"True Detective\");",
+									"    });",
+									"",
+									"    pm.test(\"True Detective: Aired on HBO\", () => {",
+									"        pm.expect(jsonData[4].network.name).to.eql(\"HBO\");",
+									"    });",
+									"",
+									"    pm.test(\"True Detective: series contains Drama\", () => {",
+									"        pm.expect(jsonData[4].genres).to.be.an('array').that.includes(\"Drama\");",
+									"    });",
+									"",
+									"    pm.test(\"True Detective: aired after the year 2012, but before the year 2016\", () => {",
+									"        let firstAiredDate = new Date(jsonData[4].premiered);",
+									"        pm.expect(firstAiredDate).to.be.within(startAcceptableDate, endAcceptableDate);",
+									"    });",
+									"}",
+									"",
+									"tests[\"Looking\"]; {",
+									"    pm.test(\"Looking: has correct show name\", () => {",
+									"        pm.expect(jsonData[132].name).to.eql(\"Looking\");",
+									"    });",
+									"",
+									"    pm.test(\"Looking: Aired on HBO\", () => {",
+									"        pm.expect(jsonData[132].network.name).to.eql(\"HBO\");",
+									"    });",
+									"",
+									"    pm.test(\"Looking: series contains Drama\", () => {",
+									"        pm.expect(jsonData[132].genres).to.be.an('array').that.includes(\"Drama\");",
+									"    });",
+									"",
+									"    pm.test(\"Looking: aired after the year 2012, but before the year 2016\", () => {",
+									"        let firstAiredDate = new Date(jsonData[132].premiered);",
+									"        pm.expect(firstAiredDate).to.be.within(startAcceptableDate, endAcceptableDate);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.tvmaze.com/shows",
+							"protocol": "https",
+							"host": [
+								"api",
+								"tvmaze",
+								"com"
+							],
+							"path": [
+								"shows"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Q2 Answers",
+			"item": [
+				{
+					"name": "True Detective",
+					"item": [
+						{
+							"name": "True Detective episodes w/Tests",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"The True dectective: Season 1 has 8 episodes\", () => {",
+											"    pm.expect(jsonData[0].episodeOrder).to.eql(8);",
+											"});",
+											"",
+											"pm.test(\"The True dectective: Season 2 has 8 episodes\", () => {",
+											"    pm.expect(jsonData[1].episodeOrder).to.eql(8);",
+											"});",
+											"",
+											"pm.test(\"The True dectective: Season 3 has 8 episodes\", () => {",
+											"    pm.expect(jsonData[2].episodeOrder).to.eql(8);    ",
+											"});",
+											"",
+											"pm.test(\"The True dectective: has a total of 3 seasons\", () => {",
+											"    pm.expect(jsonData.length).to.eql(3);    ",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.tvmaze.com/shows/5/seasons",
+									"protocol": "https",
+									"host": [
+										"api",
+										"tvmaze",
+										"com"
+									],
+									"path": [
+										"shows",
+										"5",
+										"seasons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "True Detective runtime w/Tests",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"The True dectective: Season 1 has a runtime of 480min\", () => {",
+											"    const seasonOneTotalRuntime =",
+											"        jsonData[0].runtime + jsonData[1].runtime +",
+											"        jsonData[2].runtime + jsonData[3].runtime +",
+											"        jsonData[4].runtime + jsonData[5].runtime +",
+											"        jsonData[6].runtime + jsonData[7].runtime;",
+											"    pm.expect(seasonOneTotalRuntime).to.eql(480);",
+											"});",
+											"",
+											"pm.test(\"The True dectective: Season 2 has a runtime of 510min\", () => {",
+											"    const seasonTwoTotalRuntime =",
+											"        jsonData[8].runtime + jsonData[9].runtime +",
+											"        jsonData[10].runtime + jsonData[11].runtime +",
+											"        jsonData[12].runtime + jsonData[13].runtime +",
+											"        jsonData[14].runtime + jsonData[15].runtime;",
+											"    pm.expect(seasonTwoTotalRuntime).to.eql(510);",
+											"});",
+											"",
+											"pm.test(\"The True dectective: Season 3 has a runtime of 503min\", () => {",
+											"    const seasonThreeTotalRuntime =",
+											"        jsonData[16].runtime + jsonData[17].runtime +",
+											"        jsonData[18].runtime + jsonData[19].runtime +",
+											"        jsonData[20].runtime + jsonData[21].runtime +",
+											"        jsonData[22].runtime + jsonData[23].runtime;",
+											"    pm.expect(seasonThreeTotalRuntime).to.eql(503);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.tvmaze.com/shows/5/episodes",
+									"protocol": "https",
+									"host": [
+										"api",
+										"tvmaze",
+										"com"
+									],
+									"path": [
+										"shows",
+										"5",
+										"episodes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "The Leftovers",
+					"item": [
+						{
+							"name": "The Leftovers episodes w/Tests",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"The Leftovers: Season 1 has 10 episodes\", () => {",
+											"    pm.expect(jsonData[0].episodeOrder).to.eql(10);",
+											"});",
+											"",
+											"pm.test(\"The Leftovers: Season 2 has 10 episodes\", () => {",
+											"    pm.expect(jsonData[1].episodeOrder).to.eql(10);",
+											"});",
+											"",
+											"pm.test(\"The Leftovers: Season 3 has 8 episodes\", () => {",
+											"    pm.expect(jsonData[2].episodeOrder).to.eql(8);    ",
+											"});",
+											"",
+											"pm.test(\"The Leftovers: has a total of 3 seasons\", () => {",
+											"    pm.expect(jsonData.length).to.eql(3);    ",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.tvmaze.com/shows/138/seasons",
+									"protocol": "https",
+									"host": [
+										"api",
+										"tvmaze",
+										"com"
+									],
+									"path": [
+										"shows",
+										"138",
+										"seasons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "The Leftovers runtime w/Tests",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"The Leftovers: Season 1 has a runtime of 600min\", () => {",
+											"    const seasonOneTotalRuntime =",
+											"        jsonData[0].runtime + jsonData[1].runtime +",
+											"        jsonData[2].runtime + jsonData[3].runtime +",
+											"        jsonData[4].runtime + jsonData[5].runtime +",
+											"        jsonData[6].runtime + jsonData[7].runtime +",
+											"        jsonData[8].runtime + jsonData[9].runtime;",
+											"    pm.expect(seasonOneTotalRuntime).to.eql(600);",
+											"});",
+											"",
+											"pm.test(\"The Leftovers: Season 2 has a runtime of 600min\", () => {",
+											"    const seasonTwoTotalRuntime =",
+											"        jsonData[10].runtime + jsonData[11].runtime +",
+											"        jsonData[12].runtime + jsonData[13].runtime +",
+											"        jsonData[14].runtime + jsonData[15].runtime +",
+											"        jsonData[16].runtime + jsonData[17].runtime +",
+											"        jsonData[18].runtime + jsonData[19].runtime;",
+											"    pm.expect(seasonTwoTotalRuntime).to.eql(600);",
+											"});",
+											"",
+											"pm.test(\"The Leftovers: Season 3 has a runtime of 495min\", () => {",
+											"    const seasonThreeTotalRuntime =",
+											"        jsonData[20].runtime + jsonData[21].runtime +",
+											"        jsonData[22].runtime + jsonData[23].runtime +",
+											"        jsonData[24].runtime + jsonData[25].runtime +",
+											"        jsonData[26].runtime + jsonData[27].runtime;",
+											"    pm.expect(seasonThreeTotalRuntime).to.eql(495);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.tvmaze.com/shows/138/episodes",
+									"protocol": "https",
+									"host": [
+										"api",
+										"tvmaze",
+										"com"
+									],
+									"path": [
+										"shows",
+										"138",
+										"episodes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Looking",
+					"item": [
+						{
+							"name": "Looking episodes w/Tests",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"Lookig: Season 1 has 8 episodes\", () => {",
+											"    pm.expect(jsonData[0].episodeOrder).to.eql(8);",
+											"});",
+											"",
+											"pm.test(\"Looking: Season 2 has 10 episodes\", () => {",
+											"    pm.expect(jsonData[1].episodeOrder).to.eql(10);",
+											"});",
+											"",
+											"pm.test(\"Looking: has a total of 2 seasons\", () => {",
+											"    pm.expect(jsonData.length).to.eql(2);    ",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.tvmaze.com/shows/140/seasons",
+									"protocol": "https",
+									"host": [
+										"api",
+										"tvmaze",
+										"com"
+									],
+									"path": [
+										"shows",
+										"140",
+										"seasons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Looking runtime w/Tests",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"Looking: Season 1 has a runtime of 240min\", () => {",
+											"    const seasonOneTotalRuntime =",
+											"        jsonData[0].runtime + jsonData[1].runtime +",
+											"        jsonData[2].runtime + jsonData[3].runtime +",
+											"        jsonData[4].runtime + jsonData[5].runtime +",
+											"        jsonData[6].runtime + jsonData[7].runtime;",
+											"    pm.expect(seasonOneTotalRuntime).to.eql(240);",
+											"});",
+											"",
+											"pm.test(\"Looking: Season 2 has a runtime of 300min\", () => {",
+											"    const seasonTwoTotalRuntime =",
+											"        jsonData[8].runtime + jsonData[9].runtime +",
+											"        jsonData[10].runtime + jsonData[11].runtime +",
+											"        jsonData[12].runtime + jsonData[13].runtime +",
+											"        jsonData[14].runtime + jsonData[15].runtime +",
+											"        jsonData[16].runtime + jsonData[17].runtime;",
+											"    pm.expect(seasonTwoTotalRuntime).to.eql(300);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.tvmaze.com/shows/140/episodes",
+									"protocol": "https",
+									"host": [
+										"api",
+										"tvmaze",
+										"com"
+									],
+									"path": [
+										"shows",
+										"140",
+										"episodes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Q3 Answers",
+			"item": [
+				{
+					"name": "True Detective avg episode runtime w/Tests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"The True dectective: average run time\", () => {",
+									"    const allSeasonsCombinedRuntime =",
+									"        jsonData[0].runtime + jsonData[1].runtime +",
+									"        jsonData[2].runtime + jsonData[3].runtime +",
+									"        jsonData[4].runtime + jsonData[5].runtime +",
+									"        jsonData[6].runtime + jsonData[7].runtime +",
+									"        jsonData[8].runtime + jsonData[9].runtime +",
+									"        jsonData[10].runtime + jsonData[11].runtime +",
+									"        jsonData[12].runtime + jsonData[13].runtime +",
+									"        jsonData[14].runtime + jsonData[15].runtime +",
+									"        jsonData[16].runtime + jsonData[17].runtime +",
+									"        jsonData[18].runtime + jsonData[19].runtime +",
+									"        jsonData[20].runtime + jsonData[21].runtime +",
+									"        jsonData[22].runtime + jsonData[23].runtime;",
+									"",
+									"    const allSeasonsCombinedEpisodeCount = jsonData.length;",
+									"",
+									"    const highestAverageRunTime = allSeasonsCombinedRuntime / allSeasonsCombinedEpisodeCount;",
+									"",
+									"    pm.expect(highestAverageRunTime).to.eql(62.208333333333336);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.tvmaze.com/shows/5/episodes",
+							"protocol": "https",
+							"host": [
+								"api",
+								"tvmaze",
+								"com"
+							],
+							"path": [
+								"shows",
+								"5",
+								"episodes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "The Leftovers avg episode runtime w/Tests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"The Leftovers: average runtime\", () => {",
+									"    const allSeasonsCombinedRuntime =",
+									"        jsonData[0].runtime + jsonData[1].runtime +",
+									"        jsonData[2].runtime + jsonData[3].runtime +",
+									"        jsonData[4].runtime + jsonData[5].runtime +",
+									"        jsonData[6].runtime + jsonData[7].runtime +",
+									"        jsonData[8].runtime + jsonData[9].runtime +",
+									"        jsonData[10].runtime + jsonData[11].runtime +",
+									"        jsonData[12].runtime + jsonData[13].runtime +",
+									"        jsonData[14].runtime + jsonData[15].runtime +",
+									"        jsonData[16].runtime + jsonData[17].runtime +",
+									"        jsonData[18].runtime + jsonData[19].runtime +",
+									"        jsonData[20].runtime + jsonData[21].runtime +",
+									"        jsonData[22].runtime + jsonData[23].runtime +",
+									"        jsonData[24].runtime + jsonData[25].runtime +",
+									"        jsonData[26].runtime + jsonData[27].runtime;",
+									"",
+									"    const allSeasonsCombinedEpisodeCount = jsonData.length;",
+									"",
+									"    const highestAverageRunTime = allSeasonsCombinedRuntime / allSeasonsCombinedEpisodeCount;",
+									"",
+									"    pm.expect(highestAverageRunTime).to.eql(60.535714285714285);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.tvmaze.com/shows/138/episodes",
+							"protocol": "https",
+							"host": [
+								"api",
+								"tvmaze",
+								"com"
+							],
+							"path": [
+								"shows",
+								"138",
+								"episodes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Looking avg episode runtime w/Tests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Looking: average runtime\", () => {",
+									"    const allSeasonsCombinedRuntime =",
+									"        jsonData[0].runtime + jsonData[1].runtime +",
+									"        jsonData[2].runtime + jsonData[3].runtime +",
+									"        jsonData[4].runtime + jsonData[5].runtime +",
+									"        jsonData[6].runtime + jsonData[7].runtime +",
+									"        jsonData[8].runtime + jsonData[9].runtime +",
+									"        jsonData[10].runtime + jsonData[11].runtime +",
+									"        jsonData[12].runtime + jsonData[13].runtime +",
+									"        jsonData[14].runtime + jsonData[15].runtime +",
+									"        jsonData[16].runtime + jsonData[17].runtime ;",
+									"",
+									"    const allSeasonsCombinedEpisodeCount = jsonData.length;",
+									"",
+									"    const highestAverageRunTime = allSeasonsCombinedRuntime / allSeasonsCombinedEpisodeCount;",
+									"",
+									"    pm.expect(highestAverageRunTime).to.eql(30);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.tvmaze.com/shows/140/episodes",
+							"protocol": "https",
+							"host": [
+								"api",
+								"tvmaze",
+								"com"
+							],
+							"path": [
+								"shows",
+								"140",
+								"episodes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
